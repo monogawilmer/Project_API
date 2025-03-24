@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Project_API.Application.Interfaces;
+using Project_API.Application.Interfaces.Repositories;
 using Project_API.Domain.Entities;
 using Project_API.Infraestructure.Data;
 
@@ -92,7 +92,7 @@ namespace Project_API.Infraestructure.Repositories
             }
             catch (Exception ex)
             {
-                throw new ApplicationException($"Error al actualizar el usuario con ID {usuario.Id}", ex);
+                throw new ApplicationException($"Error al actualizar el usuario con ID {usuario.Id}.", ex);
             }
         }
 
@@ -107,14 +107,14 @@ namespace Project_API.Infraestructure.Repositories
         {
             try
             {
-                Usuario? usuario = await _context.Usuarios.FindAsync(id) ?? throw new KeyNotFoundException($"Usuario con ID {id} no encontrado.");
+                Usuario usuario = await _context.Usuarios.FindAsync(id) ?? throw new KeyNotFoundException($"Usuario con ID {id} no encontrado.");
 
                 _context.Usuarios.Remove(usuario);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                throw new ApplicationException($"Error al eliminar el usuario con ID {id}", ex);
+                throw new ApplicationException($"Error al eliminar el usuario con ID {id}.", ex);
             }
         }
     }

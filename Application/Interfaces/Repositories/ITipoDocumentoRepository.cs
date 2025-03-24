@@ -1,6 +1,6 @@
 ﻿using Project_API.Domain.Entities;
 
-namespace Project_API.Application.Interfaces
+namespace Project_API.Application.Interfaces.Repositories
 {
     public interface ITipoDocumentoRepository
     {
