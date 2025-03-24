@@ -21,8 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="API\Controllers\" />
-    <Folder Include="API\" />
     <Folder Include="Domain\DTOs\" />
   </ItemGroup>
 
