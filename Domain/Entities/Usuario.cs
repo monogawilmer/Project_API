@@ -30,11 +30,11 @@ namespace Project_API.Domain.Entities
         #region Relaciones
         [ForeignKey("Rol")]
         public int RolId { get; set; }
-        public Rol Rol { get; set; } = null!;
+        public Rol? Rol { get; set; }
 
         [ForeignKey("TipoDocumento")]
         public int TipoDocumentoId { get; set; }
-        public TipoDocumento TipoDocumento { get; set; } = null!;
+        public TipoDocumento? TipoDocumento { get; set; }
         #endregion
     }
 }

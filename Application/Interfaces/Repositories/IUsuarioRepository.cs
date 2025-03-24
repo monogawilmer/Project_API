@@ -9,5 +9,6 @@ namespace Project_API.Application.Interfaces.Repositories
         Task AddAsync(Usuario usuario);
         Task<bool> UpdateAsync(Usuario usuario);
         Task<bool> DeleteAsync(int id);
+        Task<Usuario?> GetByEmailAsync(string email);
     }
 }

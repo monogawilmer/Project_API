@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_API.Application.Interfaces.Services;
 using Project_API.Domain.Entities;
@@ -16,6 +17,7 @@ namespace Project_API.API.Controllers
             _usuarioService = usuarioService;
         }
 
+        [Authorize]
         [HttpGet("ObtenerUsuarios")]
         public async Task<IActionResult> GetAllAsync()
         {
@@ -23,6 +25,7 @@ namespace Project_API.API.Controllers
             return Ok(usuarios);
         }
 
+        [Authorize]
         [HttpGet("ObtenerUsuario/{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
@@ -31,6 +34,7 @@ namespace Project_API.API.Controllers
             return Ok(usuario);
         }
 
+        [Authorize]
         [HttpPost("CrearUsuario")]
         public async Task<IActionResult> AddAsync([FromBody] Usuario usuario)
         {
@@ -38,6 +42,7 @@ namespace Project_API.API.Controllers
             return CreatedAtAction(nameof(GetByIdAsync), new { id = nuevoUsuario.Id }, nuevoUsuario);
         }
 
+        [Authorize]
         [HttpPut("ActualizarUsuario/{id}")]
         public async Task<IActionResult> UpdateAsync(int id, [FromBody] Usuario usuario)
         {
@@ -49,6 +54,7 @@ namespace Project_API.API.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("EliminarUsuario/{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {

@@ -117,5 +117,22 @@ namespace Project_API.Infraestructure.Repositories
                 throw new ApplicationException($"Error al eliminar el usuario con ID {id}.", ex);
             }
         }
+
+        /// <summary>
+        /// Metodo para obtener un Usuario por su correo
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public async Task<Usuario?> GetByEmailAsync(string email)
+        {
+            try
+            {
+                return await _context.Usuarios.Include(x => x.Rol).FirstOrDefaultAsync(u => u.Correo == email) ?? throw new KeyNotFoundException($"Usuario con email {email} no encontrado.");
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"Error al obtener el usuario con email {email}.", ex);
+            }
+        }
     }
 }
