@@ -4,10 +4,10 @@ namespace Project_API.Application.Interfaces.Repositories
 {
     public interface IRolRepository
     {
-        Task<List<Rol>> GetAll();
-        Task<Rol?> GetById(int id);
-        Task Add(Rol rol);
-        Task Update(Rol rol);
-        Task Delete(int id);
+        Task<List<Rol>> GetAllAsync();
+        Task<Rol?> GetByIdAsync(int id);
+        Task AddAsync(Rol rol);
+        Task<bool> UpdateAsync(Rol rol);
+        Task<bool> DeleteAsync(int id);
     }
 }

@@ -4,10 +4,10 @@ namespace Project_API.Application.Interfaces.Repositories
 {
     public interface ITipoDocumentoRepository
     {
-        Task<List<TipoDocumento>> GetAll();
-        Task<TipoDocumento?> GetById(int id);
-        Task Add(TipoDocumento tipoDocumento);
-        Task Update(TipoDocumento tipoDocumento);
-        Task Delete(int id);
+        Task<List<TipoDocumento>> GetAllAsync();
+        Task<TipoDocumento?> GetByIdAsync(int id);
+        Task AddAsync(TipoDocumento tipoDocumento);
+        Task<bool> UpdateAsync(TipoDocumento tipoDocumento);
+        Task<bool> DeleteAsync(int id);
     }
 }

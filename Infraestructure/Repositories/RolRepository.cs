@@ -23,7 +23,7 @@ namespace Project_API.Infraestructure.Repositories
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<List<Rol>> GetAll()
+        public async Task<List<Rol>> GetAllAsync()
         {
             try
             {
@@ -42,7 +42,7 @@ namespace Project_API.Infraestructure.Repositories
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<Rol?> GetById(int id)
+        public async Task<Rol?> GetByIdAsync(int id)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace Project_API.Infraestructure.Repositories
         /// <param name="rol"></param>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task Add(Rol rol)
+        public async Task AddAsync(Rol rol)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace Project_API.Infraestructure.Repositories
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
         /// <exception cref="ApplicationException"></exception>
-        public async Task Update(Rol rol)
+        public async Task<bool> UpdateAsync(Rol rol)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace Project_API.Infraestructure.Repositories
                     throw new KeyNotFoundException($"Rol con ID {rol.Id} no encontrado.");
 
                 _context.Rols.Update(rol);
-                await _context.SaveChangesAsync();
+                return await _context.SaveChangesAsync() > 0;
             }
             catch (Exception ex)
             {
@@ -103,14 +103,14 @@ namespace Project_API.Infraestructure.Repositories
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
         /// <exception cref="ApplicationException"></exception>
-        public async Task Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             try
             {
                 Rol rol = await _context.Rols.FindAsync(id) ?? throw new KeyNotFoundException($"Rol con ID {id} no encontrado.");
 
                 _context.Rols.Remove(rol);
-                await _context.SaveChangesAsync();
+                return await _context.SaveChangesAsync() > 0;
             }
             catch (Exception ex)
             {

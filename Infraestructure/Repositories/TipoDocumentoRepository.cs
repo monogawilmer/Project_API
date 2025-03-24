@@ -23,7 +23,7 @@ namespace Project_API.Infraestructure.Repositories
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<List<TipoDocumento>> GetAll()
+        public async Task<List<TipoDocumento>> GetAllAsync()
         {
             try
             {
@@ -42,7 +42,7 @@ namespace Project_API.Infraestructure.Repositories
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<TipoDocumento?> GetById(int id)
+        public async Task<TipoDocumento?> GetByIdAsync(int id)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace Project_API.Infraestructure.Repositories
         /// <param name="tipoDocumento"></param>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task Add(TipoDocumento tipoDocumento)
+        public async Task AddAsync(TipoDocumento tipoDocumento)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace Project_API.Infraestructure.Repositories
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
         /// <exception cref="ApplicationException"></exception>
-        public async Task Update(TipoDocumento tipoDocumento)
+        public async Task<bool> UpdateAsync(TipoDocumento tipoDocumento)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace Project_API.Infraestructure.Repositories
                     throw new KeyNotFoundException($"Tipo de documento con ID {tipoDocumento.Id} no encontrado.");
 
                 _context.TipoDocumentos.Update(tipoDocumento);
-                await _context.SaveChangesAsync();
+                return await _context.SaveChangesAsync() > 0;
             }
             catch (Exception ex)
             {
@@ -103,14 +103,14 @@ namespace Project_API.Infraestructure.Repositories
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
         /// <exception cref="ApplicationException"></exception>
-        public async Task Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             try
             {
                 TipoDocumento tipoDocumento = await _context.TipoDocumentos.FindAsync(id) ?? throw new KeyNotFoundException($"Tipo de documento con ID {id} no encontrado.");
 
                 _context.TipoDocumentos.Remove(tipoDocumento);
-                await _context.SaveChangesAsync();
+                return await _context.SaveChangesAsync() > 0;
             }
             catch (Exception ex)
             {

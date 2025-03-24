@@ -23,7 +23,7 @@ namespace Project_API.Infraestructure.Repositories
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<List<Usuario>> GetAll()
+        public async Task<List<Usuario>> GetAllAsync()
         {
             try
             {
@@ -42,7 +42,7 @@ namespace Project_API.Infraestructure.Repositories
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<Usuario?> GetById(int id)
+        public async Task<Usuario?> GetByIdAsync(int id)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace Project_API.Infraestructure.Repositories
         /// <param name="usuario"></param>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task Add(Usuario usuario)
+        public async Task AddAsync(Usuario usuario)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace Project_API.Infraestructure.Repositories
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
         /// <exception cref="ApplicationException"></exception>
-        public async Task Update(Usuario usuario)
+        public async Task<bool> UpdateAsync(Usuario usuario)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace Project_API.Infraestructure.Repositories
                     throw new KeyNotFoundException($"Usuario con ID {usuario.Id} no encontrado.");
 
                 _context.Usuarios.Update(usuario);
-                await _context.SaveChangesAsync();
+                return await _context.SaveChangesAsync() > 0;
             }
             catch (Exception ex)
             {
@@ -103,14 +103,14 @@ namespace Project_API.Infraestructure.Repositories
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
         /// <exception cref="ApplicationException"></exception>
-        public async Task Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             try
             {
                 Usuario usuario = await _context.Usuarios.FindAsync(id) ?? throw new KeyNotFoundException($"Usuario con ID {id} no encontrado.");
 
                 _context.Usuarios.Remove(usuario);
-                await _context.SaveChangesAsync();
+                return await _context.SaveChangesAsync() > 0;
             }
             catch (Exception ex)
             {
