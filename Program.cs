@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using Project_API.Application.Interfaces.Repositories;
 using Project_API.Application.Interfaces.Services;
 using Project_API.Application.Mappings;
+using Project_API.Application.Middlewares;
 using Project_API.Application.Services;
 using Project_API.Infraestructure.Data;
 using Project_API.Infraestructure.Repositories;
@@ -94,6 +95,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+//Middlewares
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
