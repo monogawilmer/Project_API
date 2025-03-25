@@ -17,6 +17,18 @@
             {
                 await _next(httpContext);  
             }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning($"Recurso no encontrado: {ex.Message}");
+
+                httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                httpContext.Response.ContentType = "application/json";
+                var errorResponse = new
+                {
+                    Message = "El recurso solicitado no fue encontrado."
+                };
+                await httpContext.Response.WriteAsJsonAsync(errorResponse);
+            }
             catch (Exception ex)
             {
                 _logger.LogError($"Ocurrió un error: {ex.Message}");
@@ -25,8 +37,7 @@
                 httpContext.Response.ContentType = "application/json";
                 var errorResponse = new
                 {
-                    Message = "Ocurrió un error inesperado en el servidor.",
-                    Details = ex.Message
+                    Message = "Ocurrió un error inesperado en el servidor."
                 };
 
                 await httpContext.Response.WriteAsJsonAsync(errorResponse);
