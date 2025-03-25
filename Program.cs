@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Project_API.Application.Interfaces.Repositories;
 using Project_API.Application.Interfaces.Services;
+using Project_API.Application.Mappings;
 using Project_API.Application.Services;
 using Project_API.Infraestructure.Data;
 using Project_API.Infraestructure.Repositories;
@@ -57,6 +58,9 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IRolService, RolService>();
 builder.Services.AddScoped<ITipoDocumentoService, TipoDocumentoService>();
+
+//Mapping
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 //ConnectDB
 var connectionString = builder.Configuration.GetConnectionString("DbConnect");
