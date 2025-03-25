@@ -1,23 +1,30 @@
-﻿using Project_API.Application.Interfaces.Repositories;
+﻿using AutoMapper;
+using Project_API.Application.Interfaces.Repositories;
 using Project_API.Application.Interfaces.Services;
+using Project_API.Domain.DTOs;
 using Project_API.Domain.Entities;
-using Project_API.Infraestructure.Repositories;
 
 namespace Project_API.Application.Services
 {
     public class TipoDocumentoService : ITipoDocumentoService
     {
         /// <summary>
-        /// Referencia al TipoDocumento Repositorio
+        /// Repositorio para operaciones de tipos de documento
         /// </summary>
         private readonly ITipoDocumentoRepository _tipoDocumentoRepository;
 
         /// <summary>
-        /// Constructor de TipoDocumentoService para inicializar la variable tipoDocumentoRepository
+        /// Servicio de mapeo para convertir entidades y DTOs
+        /// </summary>
+        private readonly IMapper _mapper;
+
+        /// <summary>
+        /// Inicializa el TipoDocumentoService con sus dependencias
         /// </summary>
         /// <param name="tipoDocumentoRepository"></param>
-        public TipoDocumentoService(ITipoDocumentoRepository tipoDocumentoRepository)
+        public TipoDocumentoService(IMapper mapper, ITipoDocumentoRepository tipoDocumentoRepository)
         {
+            _mapper = mapper;
             _tipoDocumentoRepository = tipoDocumentoRepository;
         }
 
@@ -26,11 +33,12 @@ namespace Project_API.Application.Services
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<List<TipoDocumento>> GetAllAsync()
+        public async Task<List<TipoDocumentoDTO>> GetAllAsync()
         {
             try
             {
-                return await _tipoDocumentoRepository.GetAllAsync();
+                List<TipoDocumento> tipoDocumentos = await _tipoDocumentoRepository.GetAllAsync();
+                return _mapper.Map<List<TipoDocumentoDTO>>(tipoDocumentos);
             }
             catch (Exception ex)
             {
@@ -45,11 +53,12 @@ namespace Project_API.Application.Services
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<TipoDocumento> GetByIdAsync(int id)
+        public async Task<TipoDocumentoDTO> GetByIdAsync(int id)
         {
             try
             {
-                return await _tipoDocumentoRepository.GetByIdAsync(id) ?? throw new KeyNotFoundException("Tipo de documento no encontrado.");
+                TipoDocumento tipoDocumento = await _tipoDocumentoRepository.GetByIdAsync(id) ?? throw new KeyNotFoundException("Tipo de documento no encontrado.");
+                return _mapper.Map<TipoDocumentoDTO>(tipoDocumento);
             }
             catch (Exception ex)
             {
@@ -63,12 +72,12 @@ namespace Project_API.Application.Services
         /// <param name="tipoDocumento"></param>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<TipoDocumento> AddAsync(TipoDocumento tipoDocumento)
+        public async Task<TipoDocumentoDTO> AddAsync(TipoDocumento tipoDocumento)
         {
             try
             {
                 await _tipoDocumentoRepository.AddAsync(tipoDocumento);
-                return tipoDocumento;
+                return _mapper.Map<TipoDocumentoDTO>(tipoDocumento);
             }
             catch (Exception ex)
             {

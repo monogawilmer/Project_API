@@ -1,23 +1,30 @@
-﻿using Project_API.Application.Interfaces.Repositories;
+﻿using AutoMapper;
+using Project_API.Application.Interfaces.Repositories;
 using Project_API.Application.Interfaces.Services;
+using Project_API.Domain.DTOs;
 using Project_API.Domain.Entities;
-using Project_API.Infraestructure.Repositories;
 
 namespace Project_API.Application.Services
 {
     public class RolService : IRolService
     {
         /// <summary>
-        /// Referencia al Rol Repositorio
+        /// Repositorio para operaciones de rol
         /// </summary>
         private readonly IRolRepository _rolRepository;
 
         /// <summary>
-        /// Constructor de RolService para inicializar la variable rolRepository
+        /// Servicio de mapeo para convertir entidades y DTOs
+        /// </summary>
+        private readonly IMapper _mapper;
+
+        /// <summary>
+        /// Inicializa el RolService con sus dependencias
         /// </summary>
         /// <param name="rolRepository"></param>
-        public RolService(IRolRepository rolRepository)
+        public RolService(IMapper mapper, IRolRepository rolRepository)
         {
+            _mapper =  mapper;
             _rolRepository = rolRepository;
         }
 
@@ -26,11 +33,12 @@ namespace Project_API.Application.Services
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<List<Rol>> GetAllAsync()
+        public async Task<List<RolDTO>> GetAllAsync()
         {
             try
             {
-                return await _rolRepository.GetAllAsync();
+                List<Rol> rols = await _rolRepository.GetAllAsync();
+                return _mapper.Map<List<RolDTO>>(rols);
             }
             catch (Exception ex)
             {
@@ -45,11 +53,12 @@ namespace Project_API.Application.Services
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<Rol> GetByIdAsync(int id)
+        public async Task<RolDTO> GetByIdAsync(int id)
         {
             try
             {
-                return await _rolRepository.GetByIdAsync(id) ?? throw new KeyNotFoundException("Rol no encontrado.");
+                Rol rol = await _rolRepository.GetByIdAsync(id) ?? throw new KeyNotFoundException("Rol no encontrado.");
+                return _mapper.Map<RolDTO>(rol);
             }
             catch (Exception ex)
             {
@@ -63,12 +72,12 @@ namespace Project_API.Application.Services
         /// <param name="rol"></param>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<Rol> AddAsync(Rol rol)
+        public async Task<RolDTO> AddAsync(Rol rol)
         {
             try
             {
                 await _rolRepository.AddAsync(rol);
-                return rol;
+                return _mapper.Map<RolDTO>(rol);
             }
             catch (Exception ex)
             {

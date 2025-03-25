@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_API.Application.Interfaces.Services;
+using Project_API.Domain.DTOs;
 using Project_API.Domain.Entities;
 
 namespace Project_API.API.Controllers
@@ -21,7 +21,7 @@ namespace Project_API.API.Controllers
         [HttpGet("ObtenerUsuarios")]
         public async Task<IActionResult> GetAllAsync()
         {
-            List<Usuario> usuarios = await _usuarioService.GetAllAsync();
+            List<UsuarioDTO> usuarios = await _usuarioService.GetAllAsync();
             return Ok(usuarios);
         }
 
@@ -29,7 +29,7 @@ namespace Project_API.API.Controllers
         [HttpGet("ObtenerUsuario/{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
-            Usuario usuario = await _usuarioService.GetByIdAsync(id);
+            UsuarioDTO usuario = await _usuarioService.GetByIdAsync(id);
             if (usuario == null) return NotFound($"Usuario con ID {id} no encontrado.");
             return Ok(usuario);
         }
@@ -38,7 +38,7 @@ namespace Project_API.API.Controllers
         [HttpPost("CrearUsuario")]
         public async Task<IActionResult> AddAsync([FromBody] Usuario usuario)
         {
-            Usuario nuevoUsuario = await _usuarioService.AddAsync(usuario);
+            UsuarioDTO nuevoUsuario = await _usuarioService.AddAsync(usuario);
             return CreatedAtAction(nameof(GetByIdAsync), new { id = nuevoUsuario.Id }, nuevoUsuario);
         }
 

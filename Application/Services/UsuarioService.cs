@@ -1,5 +1,7 @@
-﻿using Project_API.Application.Interfaces.Repositories;
+﻿using AutoMapper;
+using Project_API.Application.Interfaces.Repositories;
 using Project_API.Application.Interfaces.Services;
+using Project_API.Domain.DTOs;
 using Project_API.Domain.Entities;
 
 namespace Project_API.Application.Services
@@ -7,16 +9,22 @@ namespace Project_API.Application.Services
     public class UsuarioService : IUsuarioService
     {
         /// <summary>
-        /// Referencia al Usuario Repositorio
+        /// Repositorio para operaciones de usuario
         /// </summary>
         private readonly IUsuarioRepository _usuarioRepository;
 
         /// <summary>
-        /// Constructor de UsuarioService para inicializar la variable usuarioRepository
+        /// Servicio de mapeo para convertir entidades y DTOs
+        /// </summary>
+        private readonly IMapper _mapper;
+
+        /// <summary>
+        /// Inicializa el UsuarioService con sus dependencias
         /// </summary>
         /// <param name="usuarioRepository"></param>
-        public UsuarioService(IUsuarioRepository usuarioRepository)
+        public UsuarioService(IMapper mapper, IUsuarioRepository usuarioRepository)
         {
+            _mapper = mapper;
             _usuarioRepository = usuarioRepository;
         }
 
@@ -25,11 +33,12 @@ namespace Project_API.Application.Services
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<List<Usuario>> GetAllAsync()
+        public async Task<List<UsuarioDTO>> GetAllAsync()
         {
             try
             {
-                return await _usuarioRepository.GetAllAsync();
+                List<Usuario> usuarios = await _usuarioRepository.GetAllAsync();
+                return _mapper.Map<List<UsuarioDTO>>(usuarios);
             }
             catch (Exception ex)
             {
@@ -44,11 +53,12 @@ namespace Project_API.Application.Services
         /// <returns></returns>
         /// <exception cref="KeyNotFoundException"></exception>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<Usuario> GetByIdAsync(int id)
+        public async Task<UsuarioDTO> GetByIdAsync(int id)
         {
             try
             {
-                return await _usuarioRepository.GetByIdAsync(id) ?? throw new KeyNotFoundException("Usuario no encontrado.");
+                Usuario usuario = await _usuarioRepository.GetByIdAsync(id) ?? throw new KeyNotFoundException("Usuario no encontrado.");
+                return _mapper.Map<UsuarioDTO>(usuario);
             }
             catch (Exception ex)
             {
@@ -62,12 +72,12 @@ namespace Project_API.Application.Services
         /// <param name="usuario"></param>
         /// <returns></returns>
         /// <exception cref="ApplicationException"></exception>
-        public async Task<Usuario> AddAsync(Usuario usuario)
+        public async Task<UsuarioDTO> AddAsync(Usuario usuario)
         {
             try
             {
                 await _usuarioRepository.AddAsync(usuario);
-                return usuario;
+                return _mapper.Map<UsuarioDTO>(usuario);
             }
             catch (Exception ex)
             {

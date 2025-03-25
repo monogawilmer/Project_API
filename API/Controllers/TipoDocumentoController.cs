@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_API.Application.Interfaces.Services;
+using Project_API.Domain.DTOs;
 using Project_API.Domain.Entities;
 
 namespace Project_API.API.Controllers
@@ -21,7 +22,7 @@ namespace Project_API.API.Controllers
         [HttpGet("ObtenerTipoDocumentos")]
         public async Task<IActionResult> GetAllAsync()
         {
-            List<TipoDocumento> tipoDocumento = await _tipoDocumentoService.GetAllAsync();
+            List<TipoDocumentoDTO> tipoDocumento = await _tipoDocumentoService.GetAllAsync();
             return Ok(tipoDocumento);
         }
 
@@ -29,7 +30,7 @@ namespace Project_API.API.Controllers
         [HttpGet("ObtenerTipoDocumento/{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
-            TipoDocumento tipoDocumento = await _tipoDocumentoService.GetByIdAsync(id);
+            TipoDocumentoDTO tipoDocumento = await _tipoDocumentoService.GetByIdAsync(id);
             if (tipoDocumento == null) return NotFound($"Tipo de documento con ID {id} no encontrado.");
             return Ok(tipoDocumento);
         }
@@ -38,7 +39,7 @@ namespace Project_API.API.Controllers
         [HttpPost("CrearTipoDocumento")]
         public async Task<IActionResult> AddAsync([FromBody] TipoDocumento tipoDocumento)
         {
-            TipoDocumento nuevoTipoDocumento = await _tipoDocumentoService.AddAsync(tipoDocumento);
+            TipoDocumentoDTO nuevoTipoDocumento = await _tipoDocumentoService.AddAsync(tipoDocumento);
             return CreatedAtAction(nameof(GetByIdAsync), new { id = nuevoTipoDocumento.Id }, nuevoTipoDocumento);
         }
 

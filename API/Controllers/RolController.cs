@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_API.Application.Interfaces.Services;
+using Project_API.Domain.DTOs;
 using Project_API.Domain.Entities;
 
 namespace Project_API.API.Controllers
@@ -21,7 +22,7 @@ namespace Project_API.API.Controllers
         [HttpGet("ObtenerRoles")]
         public async Task<IActionResult> GetAllAsync()
         {
-            List<Rol> rols = await _rolService.GetAllAsync();
+            List<RolDTO> rols = await _rolService.GetAllAsync();
             return Ok(rols);
         }
 
@@ -29,7 +30,7 @@ namespace Project_API.API.Controllers
         [HttpGet("ObtenerRol/{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
-            Rol rol = await _rolService.GetByIdAsync(id);
+            RolDTO rol = await _rolService.GetByIdAsync(id);
             if (rol == null) return NotFound($"Rol con ID {id} no encontrado.");
             return Ok(rol);
         }
@@ -38,7 +39,7 @@ namespace Project_API.API.Controllers
         [HttpPost("CrearRol")]
         public async Task<IActionResult> AddAsync([FromBody] Rol rol)
         {
-            Rol nuevoRol = await _rolService.AddAsync(rol);
+            RolDTO nuevoRol = await _rolService.AddAsync(rol);
             return CreatedAtAction(nameof(GetByIdAsync), new { id = nuevoRol.Id }, nuevoRol);
         }
 
